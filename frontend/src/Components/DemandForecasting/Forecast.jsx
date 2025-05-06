@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import axios from 'axios';
-import { Line } from 'react-chartjs-2';
+import React, { useState } from "react";
+import axios from "axios";
+import { Line } from "react-chartjs-2";
 
 const Forecast = () => {
   const [sku, setSku] = useState("");
@@ -11,37 +11,40 @@ const Forecast = () => {
 
   const handleSubmit = async () => {
     try {
-      const response = await axios.post('http://localhost:8000/forecast/', {
+      const response = await axios.post("http://localhost:8000/forecast/", {
         sku,
         start_date: startDate,
-        end_date: endDate
+        end_date: endDate,
       });
       setForecastData(response.data.forecast);
 
-      const reportResponse = await axios.post('http://localhost:8000/generate_feedback_report/', {
-        sku,
-        start_date: startDate,
-        end_date: endDate
-      });
+      const reportResponse = await axios.post(
+        "http://localhost:8000/generate_feedback_report/",
+        {
+          sku,
+          start_date: startDate,
+          end_date: endDate,
+        }
+      );
       setFeedbackReportLink(reportResponse.data.report_path);
     } catch (error) {
-      console.error('Error fetching forecast:', error);
+      console.error("Error fetching forecast:", error);
     }
   };
 
   const data = {
-    labels: forecastData ? forecastData.map(item => item.ds) : [],
+    labels: forecastData ? forecastData.map((item) => item.ds) : [],
     datasets: [
       {
-        label: 'Forecasted Sales',
-        data: forecastData ? forecastData.map(item => item.yhat) : [],
-        borderColor: 'rgba(75,192,192,1)',
+        label: "Forecasted Sales",
+        data: forecastData ? forecastData.map((item) => item.yhat) : [],
+        borderColor: "rgba(75,192,192,1)",
         fill: false,
         tension: 0.1,
         pointRadius: 5,
-        pointHoverRadius: 8
-      }
-    ]
+        pointHoverRadius: 8,
+      },
+    ],
   };
 
   return (
@@ -77,7 +80,9 @@ const Forecast = () => {
       {feedbackReportLink && (
         <div>
           <h3>Download Feedback Report</h3>
-          <a href={feedbackReportLink} download>Download Report</a>
+          <a href={feedbackReportLink} download>
+            Download Report
+          </a>
         </div>
       )}
     </div>
