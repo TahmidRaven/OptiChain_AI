@@ -5,6 +5,11 @@ from routers import auth
 app = FastAPI()
 app.include_router(auth.router)
 
+@app.get("/")
+async def root():
+    return {"message": "Backend is working!"}
+
+
 register_tortoise(
     app,
     db_url="sqlite://db.sqlite3",
