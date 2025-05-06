@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom'; // Updated imports
+import { useNavigate, Link } from 'react-router-dom';
 import './Registration.css';
 import robotIcon from '../../assets/Ai_robot.png';
 
@@ -7,13 +7,33 @@ const Registration = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const navigate = useNavigate(); // Use React Router's navigation
+  const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Registering user:', { name, email, password });
-    // After successful registration:
-    navigate('/dashboard'); // Redirect to dashboard or login
+  
+    try {
+      const response = await fetch("http://localhost:8000/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          username: name,
+          email,
+          password
+        }),
+      });
+  
+      if (!response.ok) {
+        throw new Error("Registration failed");
+      }
+  
+      const data = await response.json();
+      console.log("Registration successful:", data);
+      navigate("/login");
+    } catch (error) {
+      console.error("Registration error:", error);
+      alert("Failed to register. Please try again.");
+    }
   };
 
   return (

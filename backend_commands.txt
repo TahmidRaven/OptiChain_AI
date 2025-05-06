@@ -8,3 +8,9 @@ http://localhost:8000/register
 
 python -m venv venvOptichain   <-- from optichain folder create this
 source venvOptichain/Scripts/Activate
+
+
+
+
+email: test0user@example.com
+password: your0password

@@ -4,3 +4,4 @@ passlib[bcrypt]
 python-jose
 uvicorn
 email-validator
+fastapi[all]

@@ -9,10 +9,31 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const navigate = useNavigate(); 
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Logging in with:', { email, password });
-    navigate('/dashboard');
+  
+    try {
+      const response = await fetch("http://localhost:8000/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          username: email,
+          password: password
+        }),
+      });
+  
+      if (!response.ok) {
+        throw new Error("Login failed");
+      }
+  
+      const data = await response.json();
+      console.log("Login successful:", data);
+      localStorage.setItem("token", data.access_token); // Save JWT token
+      navigate("/profile");
+    } catch (error) {
+      console.error("Login error:", error);
+      alert("Invalid credentials. Please try again.");
+    }
   };
 
   return (
