@@ -3,7 +3,7 @@ from tortoise import Tortoise
 from models import Inventory, Sales
 
 # Load the dataset from CSV
-file_path = 'dummy_sme_clothing_data_bd_festivals.csv'
+file_path = 'OptiChain_AI/backend/dataset/dummy_sme_clothing_data_bd_festivals.csv'
 dataset = pd.read_csv(file_path)
 
 # Function to populate the database
