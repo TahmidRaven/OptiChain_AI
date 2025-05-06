@@ -20,13 +20,16 @@ class Inventory(models.Model):
     supplier_rating = fields.FloatField()
     competitor_price_usd = fields.FloatField()
     our_price_usd = fields.FloatField()
+    reorder_threshold = fields.IntField(default=10)  # New field for stock level threshold
 
+# Sales Model
 class Sales(models.Model):
     id = fields.IntField(pk=True)
     sku = fields.CharField(max_length=255)
     date = fields.DateField()
     sales = fields.IntField()
 
+# Forecast Model
 class Forecast(models.Model):
     id = fields.IntField(pk=True)
     sku = fields.CharField(max_length=255)

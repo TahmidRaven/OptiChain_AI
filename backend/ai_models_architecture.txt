@@ -1,0 +1,16 @@
+/optichain
+├── backend
+│   ├── main.py (FastAPI app)
+│   ├── models.py (Tortoise ORM models)
+│   ├── inventory.py (Real-Time Inventory Management logic)
+│   ├── populate_db.py (Script to populate the database with initial data)
+│   ├── forecast.py (Demand forecasting logic)
+│   └── schemas.py (Schemas for validation)
+├── frontend
+│   ├── src/
+│   │   ├── components/
+│   │   │   └── InventoryAlerts.js (React component for inventory alerts)
+│   │   ├── App.js (Main React.js app)
+│   │   └── api.js (API helper functions)
+├── db.sqlite3 (SQLite database file)
+└── README.md
