@@ -65,11 +65,6 @@ const Login = () => {
                 <span className="btn-arrow">→</span>
               </button>
             </form>
-
-            <div className="google-signin-wrapper">
-              <p className="or-divider">or</p>
-              <GoogleSignIn />
-            </div>
             
             <div className="login-footer">
               <a href="#" className="forgot-password">Forgot password?</a>
