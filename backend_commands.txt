@@ -1,3 +1,5 @@
 pip install -r requirements.txt 
 --> do that in backend folder
 
+uvicorn main:app --reload
+--> run backend
