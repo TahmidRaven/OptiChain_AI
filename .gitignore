@@ -3,3 +3,11 @@ venvOptichain/
 /.vscode/   
 node_modules/
 *.env
+<<<<<<<<< Temporary merge branch 1
+db.sqlite3
+=========
+db.sqlite3
+db.sqlite3-journal
+db.sqlite3-wal
+db.sqlite3-shm
+>>>>>>>>> Temporary merge branch 2
