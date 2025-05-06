@@ -1,0 +1,16 @@
+/optichain
+├── backend
+│   ├── main.py (FastAPI app)
+│   ├── models.py (Tortoise ORM models)
+│   ├── populate_db.py (Script to populate the database with initial data)
+│   ├── forecast.py (File containing forecasting logic and endpoints)
+│   ├── schemas.py (Schemas for validation and serialization)
+├── frontend
+│   ├── src/
+│   │   ├── components/
+│   │   │   └── Forecast.js (React.js component for forecasting)
+│   │   ├── services/
+│   │   │   └── api.js (API interaction functions)
+│   │   └── App.js (Main React.js app)
+├── db.sqlite3 (SQLite database file)
+└── README.md
