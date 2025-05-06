@@ -4,7 +4,7 @@ import Contact from './Components/Contact/Contact.jsx'
 import Login from './Components/Login/Login.jsx'
 import Profile from './Components/Profile/Profile.jsx'
 import Registration from './Components/Registration/Registration.jsx'
-import DemandForecasting from './Components/DemandForecasting/DemandForecasting.jsx'
+import Forecast from './Components/DemandForecasting/Forecast.jsx'
 import Layout from './Components/Layout/Layout.jsx'
 import InventoryOptimization from './Components/InventoryOptimize/InventoryOptimize.jsx'
 import SupplierAnalytics from './Components/SupplierAnalytics/SupplierAnalytics.jsx'
@@ -21,7 +21,7 @@ const App = () => {
         <Route path="login" element={<Login />} />
         <Route path="profile" element={localStorage.getItem('user') ? <Profile /> : <Navigate to="/login" />} />
         <Route path="registration" element={<Registration />} />
-        <Route path="demand-forecasting" element={<DemandForecasting />} />
+        <Route path="demand-forecasting" element={<Forecast />} />
         <Route path="inventory-optimization" element={<InventoryOptimization />} />
         <Route path="supplier-analytics" element={<SupplierAnalytics />} />
         <Route path="route-optimization" element={<RouteOptimization />} />
