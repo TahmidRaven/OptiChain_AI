@@ -1,6 +1,7 @@
-from tortoise import fields
+from tortoise import fields, models
 from tortoise.models import Model
 from passlib.hash import bcrypt
+from tortoise.contrib.pydantic import pydantic_model_creator
 
 class User(Model):
     id = fields.IntField(pk=True)
