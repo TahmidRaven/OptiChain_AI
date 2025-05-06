@@ -1,0 +1,6 @@
+fastapi
+tortoise-orm
+passlib[bcrypt]
+python-jose
+uvicorn
+email-validator
