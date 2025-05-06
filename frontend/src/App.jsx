@@ -1,34 +1,35 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { Routes, Route, Navigate } from 'react-router-dom';
+import Home from './Components/Home/Home.jsx'
+import Contact from './Components/Contact/Contact.jsx'
+import Login from './Components/Login/Login.jsx'
+import Profile from './Components/Profile/Profile.jsx'
+import Registration from './Components/Registration/Registration.jsx'
+import DemandForecasting from './Components/DemandForecasting/DemandForecasting.jsx'
+import Layout from './Components/Layout/Layout.jsx'
+import InventoryOptimization from './Components/InventoryOptimize/InventoryOptimize.jsx'
+import SupplierAnalytics from './Components/SupplierAnalytics/SupplierAnalytics.jsx'
+import RouteOptimization from './Components/RouteOptimization/RouteOptimization.jsx'
+import PurchaseOrders from './Components/PurchaseOrderSuggest/PurchaseOrderSuggest.jsx'
+import DynamicPricing from './Components/DynamicPricing/DynamicPricing.jsx'
 
-function App() {
-  const [count, setCount] = useState(0)
-
+const App = () => {
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <Routes>
+      <Route path="/" element={<Layout />}>
+        <Route index element={<Home />} />
+        <Route path="contact" element={<Contact />} />
+        <Route path="login" element={<Login />} />
+        <Route path="profile" element={localStorage.getItem('user') ? <Profile /> : <Navigate to="/login" />} />
+        <Route path="registration" element={<Registration />} />
+        <Route path="demand-forecasting" element={<DemandForecasting />} />
+        <Route path="inventory-optimization" element={<InventoryOptimization />} />
+        <Route path="supplier-analytics" element={<SupplierAnalytics />} />
+        <Route path="route-optimization" element={<RouteOptimization />} />
+        <Route path="purchase-orders" element={<PurchaseOrders />} />
+        <Route path="dynamic-pricing" element={<DynamicPricing />} />
+        <Route path="*" element={<div>404 - Page Not Found</div>} />
+      </Route>
+    </Routes>
   )
 }
 
