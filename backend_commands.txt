@@ -8,3 +8,6 @@ http://localhost:8000/register
 
 python -m venv venvOptichain   <-- from optichain folder create this
 source venvOptichain/Scripts/Activate
+
+source venvOptichain/bin/activate   <--- for fedora env (ignore if you use windows)
+ 
