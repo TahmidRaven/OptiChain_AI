@@ -3,3 +3,4 @@ venvOptichain/
 /.vscode/   
 node_modules/
 *.env
+db.sqlite3
