@@ -11,15 +11,17 @@ import SupplierAnalytics from './Components/SupplierAnalytics/SupplierAnalytics.
 import RouteOptimization from './Components/RouteOptimization/RouteOptimization.jsx'
 import PurchaseOrders from './Components/PurchaseOrderSuggest/PurchaseOrderSuggest.jsx'
 import DynamicPricing from './Components/DynamicPricing/DynamicPricing.jsx'
+import About from './Components/About/About.jsx'
 
 const App = () => {
   return (
     <Routes>
       <Route path="/" element={<Layout />}>
         <Route index element={<Home />} />
+        <Route path="about" element={<About />} />
         <Route path="contact" element={<Contact />} />
         <Route path="login" element={<Login />} />
-        <Route path="profile" element={localStorage.getItem('user') ? <Profile /> : <Navigate to="/login" />} />
+        <Route path="profile" element={<Profile />} />
         <Route path="registration" element={<Registration />} />
         <Route path="demand-forecasting" element={<Forecast />} />
         <Route path="inventory-optimization" element={<InventoryOptimization />} />
