@@ -25,3 +25,6 @@ register_tortoise(
     generate_schemas=True,
     add_exception_handlers=True,
 )
+
+# Register the router for forecasting
+app.include_router(forecast_router, prefix="/forecast", tags=["Forecast"])

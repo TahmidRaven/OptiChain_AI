@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { Line } from 'react-chartjs-2';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { Line } from "react-chartjs-2";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -10,8 +10,8 @@ import {
   Title,
   Tooltip,
   Legend,
-} from 'chart.js';
-import styled from 'styled-components';
+} from "chart.js";
+import styled from "styled-components";
 
 // Register chart elements
 ChartJS.register(
@@ -37,7 +37,7 @@ const Container = styled.div`
 const Heading = styled.h2`
   text-align: center;
   color: #2c3e50;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 `;
 
 const FormContainer = styled.div`
@@ -128,12 +128,12 @@ const Forecast = () => {
       const fetchForecast = async () => {
         setLoading(true);
         try {
-          const response = await axios.post('http://localhost:8000/get_forecast/', {
+          const response = await axios.post("http://localhost:8000/get_forecast/", {
             sku,
             start_date: startDate,
-            end_date: endDate
+            end_date: endDate,
           });
-          setForecastData(response.data.forecast);
+          setForecastData(response.data.forecast); // Set forecast data from backend
           setLoading(false);
         } catch (error) {
           console.error("Error fetching forecast data:", error);
@@ -141,37 +141,37 @@ const Forecast = () => {
         }
       };
 
-      fetchForecast();
+      fetchForecast(); // Trigger API call when SKU, start date, and end date are entered
     }
   }, [sku, startDate, endDate]);
 
   const chartData = {
-    labels: forecastData ? forecastData.map(item => item.ds) : [], // Dates for x-axis
+    labels: forecastData ? forecastData.map((item) => item.ds) : [], // Dates for x-axis
     datasets: [
       {
-        label: 'Forecasted Sales',
-        data: forecastData ? forecastData.map(item => item.yhat) : [], // Forecasted sales for y-axis
-        borderColor: '#4caf50',
+        label: "Forecasted Sales",
+        data: forecastData ? forecastData.map((item) => item.yhat) : [], // Forecasted sales for y-axis
+        borderColor: "#4caf50",
         fill: false,
         tension: 0.1,
         pointRadius: 5,
-        pointHoverRadius: 8
-      }
-    ]
+        pointHoverRadius: 8,
+      },
+    ],
   };
 
   const generateFeedbackReport = async () => {
     setLoading(true);
     try {
-      const response = await axios.post('http://localhost:8000/generate_feedback_report/', {
+      const response = await axios.post("http://localhost:8000/generate_feedback_report/", {
         sku,
         start_date: startDate,
-        end_date: endDate
+        end_date: endDate,
       });
-      setFeedbackReportLink(response.data.report_path);  // Set the path for download
+      setFeedbackReportLink(response.data.report_path); // Set the path for download
       setLoading(false);
     } catch (error) {
-      console.error('Error generating feedback report:', error);
+      console.error("Error generating feedback report:", error);
       setLoading(false);
     }
   };

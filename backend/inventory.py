@@ -1,7 +1,7 @@
+# inventory.py
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
-from models import Inventory, Sales, Forecast
-from schemas import InventorySchema
+from models import Inventory, Sales
 import pandas as pd
 from prophet import Prophet
 
@@ -13,21 +13,16 @@ class ReorderRecommendation(BaseModel):
     reorder_quantity: int
     forecasted_sales: float
 
-# Endpoint to get current inventory status and stock alerts
-@app.get("/inventory/alerts", response_model=InventorySchema)
+@app.get("/inventory/alerts")
 async def get_inventory_alerts():
-    inventory = await Inventory.all()  # Fetch all inventory data
-
+    inventory = await Inventory.all()
     low_stock_alerts = []
-    
+
     for item in inventory:
-        # Check if stock is below the reorder threshold
         if item.stock_level < item.reorder_threshold:
-            # Fetch recent sales data for the SKU
             sales_data = await Sales.filter(sku=item.sku).order_by('-date').limit(30).all()
             sales_df = pd.DataFrame([{"ds": sale.date, "y": sale.sales} for sale in sales_data])
 
-            # If sales data exists, calculate forecast using Prophet
             if not sales_df.empty:
                 model = Prophet()
                 model.fit(sales_df)
