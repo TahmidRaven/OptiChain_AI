@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Line } from 'react-chartjs-2';
 import {
@@ -24,50 +24,62 @@ ChartJS.register(
   Legend
 );
 
-// Styled components
+// Styled-components for enhanced design
 const Container = styled.div`
   width: 80%;
   margin: 0 auto;
   padding: 2rem;
-  background-color: #f9fafb;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  background-color: #f4f7fc;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 `;
 
 const Heading = styled.h2`
   text-align: center;
-  color: #333;
+  color: #2c3e50;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 `;
 
-const Form = styled.div`
+const FormContainer = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center;
   gap: 1rem;
-  margin-bottom: 2rem;
+  align-items: center;
+  background-color: #fff;
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 `;
 
 const Input = styled.input`
   padding: 0.8rem;
   width: 50%;
   margin: 0.5rem 0;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
   font-size: 1rem;
+  box-sizing: border-box;
+  transition: border-color 0.3s ease;
+
+  &:focus {
+    outline: none;
+    border-color: #4caf50;
+  }
 `;
 
 const Button = styled.button`
   padding: 0.8rem 2rem;
   border: none;
-  background-color: #4CAF50;
+  background-color: #4caf50;
   color: white;
-  border-radius: 5px;
+  border-radius: 8px;
   font-size: 1.1rem;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease, transform 0.3s ease;
 
   &:hover {
     background-color: #45a049;
+    transform: translateY(-2px);
   }
 
   &:disabled {
@@ -80,8 +92,8 @@ const ChartContainer = styled.div`
   margin-top: 2rem;
   padding: 2rem;
   background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 `;
 
 const ReportContainer = styled.div`
@@ -89,14 +101,14 @@ const ReportContainer = styled.div`
   text-align: center;
 `;
 
-const Link = styled.a`
-  display: inline-block;
-  margin-top: 1rem;
-  padding: 1rem 2rem;
+const DownloadLink = styled.a`
+  padding: 0.8rem 1.5rem;
   background-color: #007bff;
   color: white;
-  border-radius: 4px;
+  border-radius: 8px;
   text-decoration: none;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
 
   &:hover {
     background-color: #0056b3;
@@ -111,37 +123,27 @@ const Forecast = () => {
   const [feedbackReportLink, setFeedbackReportLink] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = async () => {
-    setLoading(true);
-    try {
-      const response = await axios.post('http://localhost:8000/forecast/', {
-        sku,
-        start_date: startDate,
-        end_date: endDate
-      });
-      setForecastData(response.data.forecast);
-      setLoading(false);
-    } catch (error) {
-      console.error('Error fetching forecast:', error);
-      setLoading(false);
-    }
-  };
+  useEffect(() => {
+    if (sku && startDate && endDate) {
+      const fetchForecast = async () => {
+        setLoading(true);
+        try {
+          const response = await axios.post('http://localhost:8000/get_forecast/', {
+            sku,
+            start_date: startDate,
+            end_date: endDate
+          });
+          setForecastData(response.data.forecast);
+          setLoading(false);
+        } catch (error) {
+          console.error("Error fetching forecast data:", error);
+          setLoading(false);
+        }
+      };
 
-    const generateFeedbackReport = async () => {
-      setLoading(true);
-      try {
-        const response = await axios.post('http://localhost:8000/generate_feedback_report/', {
-          sku,
-          start_date: startDate,
-          end_date: endDate
-        });
-        setFeedbackReportLink(response.data.report_path);  // Set the path for download
-        setLoading(false);
-      } catch (error) {
-        console.error('Error generating feedback report:', error);
-        setLoading(false);
-      }
-    };
+      fetchForecast();
+    }
+  }, [sku, startDate, endDate]);
 
   const chartData = {
     labels: forecastData ? forecastData.map(item => item.ds) : [], // Dates for x-axis
@@ -158,10 +160,26 @@ const Forecast = () => {
     ]
   };
 
+  const generateFeedbackReport = async () => {
+    setLoading(true);
+    try {
+      const response = await axios.post('http://localhost:8000/generate_feedback_report/', {
+        sku,
+        start_date: startDate,
+        end_date: endDate
+      });
+      setFeedbackReportLink(response.data.report_path);  // Set the path for download
+      setLoading(false);
+    } catch (error) {
+      console.error('Error generating feedback report:', error);
+      setLoading(false);
+    }
+  };
+
   return (
     <Container>
       <Heading>Demand Forecasting</Heading>
-      <Form>
+      <FormContainer>
         <Input
           type="text"
           placeholder="Enter SKU"
@@ -178,38 +196,28 @@ const Forecast = () => {
           value={endDate}
           onChange={(e) => setEndDate(e.target.value)}
         />
-        <Button onClick={handleSubmit} disabled={loading}>
-          {loading ? "Loading..." : "Get Forecast"}
+        <Button onClick={generateFeedbackReport} disabled={loading}>
+          {loading ? "Generating Report..." : "Generate Feedback Report"}
         </Button>
-      </Form>
+      </FormContainer>
 
       {forecastData && (
         <ChartContainer>
           <h3>Forecasted Demand</h3>
-          {/* Line chart to show forecasted sales */}
           <Line data={chartData} />
         </ChartContainer>
       )}
 
-
-
-      <Button onClick={generateFeedbackReport} disabled={loading}>
-        {loading ? "Generating Report..." : "Generate Feedback Report"}
-      </Button>
-
-      {/* Display download link for feedback report if available */}
       {feedbackReportLink && (
         <ReportContainer>
           <h3>Download Feedback Report</h3>
-          <Link href={feedbackReportLink} download>
+          <DownloadLink href={feedbackReportLink} download>
             Download Report
-          </Link>
+          </DownloadLink>
         </ReportContainer>
       )}
     </Container>
   );
 };
-
-
 
 export default Forecast;
