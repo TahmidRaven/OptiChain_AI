@@ -47,6 +47,7 @@ OptiChain is a smart, scalable platform designed to empower Small and Medium Ent
 
 ## 📁 Project Structure
 
+```
 /optichain
 ├── backend
 │   ├── main.py (FastAPI app)
@@ -63,3 +64,5 @@ OptiChain is a smart, scalable platform designed to empower Small and Medium Ent
 │   │   └── api.js (API helper functions)
 ├── db.sqlite3 (SQLite database file)
 └── README.md
+```
+
