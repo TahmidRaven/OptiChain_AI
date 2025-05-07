@@ -127,21 +127,21 @@ const Forecast = () => {
     }
   };
 
-  const generateFeedbackReport = async () => {
-    setLoading(true);
-    try {
-      const response = await axios.post('http://localhost:8000/generate_feedback_report/', {
-        sku,
-        start_date: startDate,
-        end_date: endDate
-      });
-      setFeedbackReportLink(response.data.report_path);
-      setLoading(false);
-    } catch (error) {
-      console.error('Error generating feedback report:', error);
-      setLoading(false);
-    }
-  };
+    const generateFeedbackReport = async () => {
+      setLoading(true);
+      try {
+        const response = await axios.post('http://localhost:8000/generate_feedback_report/', {
+          sku,
+          start_date: startDate,
+          end_date: endDate
+        });
+        setFeedbackReportLink(response.data.report_path);  // Set the path for download
+        setLoading(false);
+      } catch (error) {
+        console.error('Error generating feedback report:', error);
+        setLoading(false);
+      }
+    };
 
   const chartData = {
     labels: forecastData ? forecastData.map(item => item.ds) : [], // Dates for x-axis
@@ -191,6 +191,8 @@ const Forecast = () => {
         </ChartContainer>
       )}
 
+
+
       <Button onClick={generateFeedbackReport} disabled={loading}>
         {loading ? "Generating Report..." : "Generate Feedback Report"}
       </Button>
@@ -207,5 +209,7 @@ const Forecast = () => {
     </Container>
   );
 };
+
+
 
 export default Forecast;
