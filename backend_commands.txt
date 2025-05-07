@@ -14,3 +14,6 @@ source venvOptichain/Scripts/Activate
 
 email: test0user@example.com
 password: your0password
+
+
+Tshirt_Black_S
