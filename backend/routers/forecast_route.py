@@ -1,3 +1,4 @@
+# forecast_route.py
 from fastapi import APIRouter, HTTPException
 from fpdf import FPDF
 from prophet import Prophet
@@ -5,14 +6,40 @@ import pandas as pd
 from models import Inventory, Sales
 from pydantic import BaseModel
 
-app = APIRouter()
+router = APIRouter()
 
+# Pydantic model to handle input
 class DemandInput(BaseModel):
     sku: str
     start_date: str
     end_date: str
 
-@app.post("/generate_feedback_report/")
+# Route for generating forecast data
+@router.post("/get_forecast/")
+async def get_forecast(data: DemandInput):
+    sales_data = await Sales.filter(
+        sku=data.sku, date__gte=data.start_date, date__lte=data.end_date
+    ).all()
+
+    if not sales_data:
+        raise HTTPException(status_code=404, detail="No sales data found")
+
+    sales_df = pd.DataFrame([{"ds": sale.date, "y": sale.sales} for sale in sales_data])
+
+    model = Prophet()
+    model.fit(sales_df)
+
+    future = model.make_future_dataframe(periods=30)
+    forecast = model.predict(future)
+
+    # Only return forecast for the future 30 days
+    forecast_data = forecast.tail(30)[['ds', 'yhat']]
+    forecast_dict = forecast_data.to_dict(orient="records")
+
+    return {"forecast": forecast_dict}
+
+# Route for generating feedback report in PDF format
+@router.post("/generate_feedback_report/")
 async def generate_feedback_report(data: DemandInput):
     sales_data = await Sales.filter(
         sku=data.sku, date__gte=data.start_date, date__lte=data.end_date
@@ -52,26 +79,3 @@ async def generate_feedback_report(data: DemandInput):
     pdf.output(report_path)
 
     return {"message": "Feedback report generated successfully", "report_path": report_path}
-
-@app.post("/get_forecast/")
-async def get_forecast(data: DemandInput):
-    sales_data = await Sales.filter(
-        sku=data.sku, date__gte=data.start_date, date__lte=data.end_date
-    ).all()
-
-    if not sales_data:
-        raise HTTPException(status_code=404, detail="No sales data found")
-
-    sales_df = pd.DataFrame([{"ds": sale.date, "y": sale.sales} for sale in sales_data])
-
-    model = Prophet()
-    model.fit(sales_df)
-
-    future = model.make_future_dataframe(periods=30)
-    forecast = model.predict(future)
-
-    # Only return forecast for the future 30 days
-    forecast_data = forecast.tail(30)[['ds', 'yhat']]
-    forecast_dict = forecast_data.to_dict(orient="records")
-
-    return {"forecast": forecast_dict}

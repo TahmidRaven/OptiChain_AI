@@ -2,6 +2,8 @@ from fastapi import FastAPI
 from tortoise.contrib.fastapi import register_tortoise
 from routers import auth
 from fastapi.middleware.cors import CORSMiddleware
+from forecast import app as forecast_router
+
 
 app = FastAPI()
 app.include_router(auth.router)
@@ -26,5 +28,5 @@ register_tortoise(
     add_exception_handlers=True,
 )
 
-# Register the router for forecasting
-app.include_router(forecast_router, prefix="/forecast", tags=["Forecast"])
+
+app.include_router(forecast_router)
