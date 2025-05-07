@@ -14,6 +14,11 @@ class UserOut(BaseModel):
     username: str
     email: EmailStr
 
+    class Config:
+        orm_mode = True
+
+
+
 class InventorySchema(BaseModel):
     sku: str
     stock_level: int
