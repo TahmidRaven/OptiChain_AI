@@ -6,6 +6,14 @@ from passlib.hash import bcrypt
 from tortoise.contrib.pydantic import pydantic_model_creator
 from utils import get_current_user  # ✅ import from utils.py
 
+from fastapi import APIRouter, HTTPException, Depends
+from prophet import Prophet
+import pandas as pd
+from models import Sales, Inventory, Forecast
+from pydantic import BaseModel
+from tortoise.contrib.pydantic import pydantic_model_creator
+from fpdf import FPDF
+
 router = APIRouter()
 
 @router.post("/register", response_model=UserOut)
@@ -36,7 +44,7 @@ async def get_profile(user: User = Depends(get_current_user)):
     return await pydantic_model_creator(User).from_tortoise_orm(user)
  
 
- class DemandInput(BaseModel):
+class DemandInput(BaseModel):
     sku: str
     start_date: str
     end_date: str
