@@ -1,5 +1,6 @@
 from pydantic import BaseModel, EmailStr
 from datetime import date
+
 class UserCreate(BaseModel):
     username: str
     email: EmailStr
@@ -16,8 +17,6 @@ class UserOut(BaseModel):
 
     class Config:
         orm_mode = True
-
-
 
 class InventorySchema(BaseModel):
     sku: str
@@ -44,7 +43,6 @@ class DemandInput(BaseModel):
 
 class ForecastResponse(BaseModel):
     forecast: list
-
 
     class Config:
         orm_mode = True

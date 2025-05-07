@@ -1,9 +1,8 @@
-# populate_db.py
 import pandas as pd
 from tortoise import Tortoise
 from models import Inventory, Sales
 
-file_path = 'dummy_sme_clothing_data_bd_festivals.csv'
+file_path = "dataset/dummy_sme_clothing_data_bd_festivals.csv"
 dataset = pd.read_csv(file_path)
 
 async def populate_database():
@@ -23,10 +22,12 @@ async def populate_database():
         )
 
 async def init_db():
-    await Tortoise.init(db_url='sqlite://db.sqlite3', modules={'models': ['__main__']})
+    await Tortoise.init(
+        db_url='sqlite://db.sqlite3',
+        modules={'models': ['models']}
+    )
     await Tortoise.generate_schemas()
     await populate_database()
 
 import asyncio
-loop = asyncio.get_event_loop()
-loop.run_until_complete(init_db())
+asyncio.run(init_db())

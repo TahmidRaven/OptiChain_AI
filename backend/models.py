@@ -1,10 +1,16 @@
 from tortoise import fields, models
-from tortoise.models import Model
 from passlib.hash import bcrypt
 from tortoise.contrib.pydantic import pydantic_model_creator
 
-from tortoise import fields, models
-from passlib.hash import bcrypt
+class Forecast(models.Model):
+    id = fields.IntField(pk=True)
+    sku = fields.CharField(max_length=255)
+    forecast_date = fields.DateField()
+    forecasted_sales = fields.FloatField()
+
+    class PydanticMeta:
+        # This will enable automatic conversion of this model to a Pydantic model
+        pass
 
 class User(models.Model):
     id = fields.IntField(pk=True)
@@ -17,7 +23,6 @@ class User(models.Model):
             return bcrypt.verify(password, self.password_hash)
         except Exception:
             return False
-
 
 class Inventory(models.Model):
     id = fields.IntField(pk=True)
@@ -34,12 +39,6 @@ class Sales(models.Model):
     sku = fields.CharField(max_length=255)
     date = fields.DateField()
     sales = fields.IntField()
-
-class Forecast(models.Model):
-    id = fields.IntField(pk=True)
-    sku = fields.CharField(max_length=255)
-    forecast_date = fields.DateField()
-    forecasted_sales = fields.FloatField()
 
 # Pydantic models for data validation
 Inventory_Pydantic = pydantic_model_creator(Inventory)

@@ -12,6 +12,7 @@ import RouteOptimization from './Components/RouteOptimization/RouteOptimization.
 import PurchaseOrders from './Components/PurchaseOrderSuggest/PurchaseOrderSuggest.jsx'
 import DynamicPricing from './Components/DynamicPricing/DynamicPricing.jsx'
 import About from './Components/About/About.jsx'
+import ForecastDashboard from './Components/DemandForecasting/Forecast.jsx';
 
 const App = () => {
   return (
@@ -23,6 +24,7 @@ const App = () => {
         <Route path="login" element={<Login />} />
         <Route path="profile" element={<Profile />} />
         <Route path="registration" element={<Registration />} />
+        <Route path="forecast" element={<ForecastDashboard />} />
         <Route path="demand-forecasting" element={<Forecast />} />
         <Route path="inventory-optimization" element={<InventoryOptimization />} />
         <Route path="supplier-analytics" element={<SupplierAnalytics />} />
