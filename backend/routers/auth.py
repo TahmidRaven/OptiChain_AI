@@ -34,3 +34,4 @@ async def login(data: UserLogin):
 @router.get("/profile", response_model=UserOut)
 async def get_profile(user: User = Depends(get_current_user)):
     return await pydantic_model_creator(User).from_tortoise_orm(user)
+ 
